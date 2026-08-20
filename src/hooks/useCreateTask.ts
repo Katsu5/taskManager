@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createTask } from '../services/taskService';
+import { createTask, fetchTasks } from '../services/taskService';
 import { Task } from '../types';
 
 const STORAGE_KEY = 'tasks';
@@ -11,6 +11,7 @@ export function useCreateTask() {
   const loaded = useRef(false);
 
   useEffect(() => {
+    let active = true;
     AsyncStorage.getItem(STORAGE_KEY)
       .then((raw) => {
         if (raw) setTasks(JSON.parse(raw));
@@ -19,6 +20,20 @@ export function useCreateTask() {
       .finally(() => {
         loaded.current = true;
       });
+
+    // QA: la lista inicial se carga desde el GET /tasks para poder probar el
+    // escenario "datos vacíos" con MSW (interceptamos la petición y devolvemos
+    // [] o una lista con tareas). En producción no hay backend: el fetch falla,
+    // el catch conserva lo persistido en AsyncStorage, así no hay regresión.
+    fetchTasks()
+      .then((remote) => {
+        if (active) setTasks(remote);
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {

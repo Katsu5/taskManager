@@ -1,0 +1,44 @@
+appId: host.exp.exponent
+---
+# QA: flujo E2E ejecutado con la app dentro de Expo Go (SDK 57).
+# Recorrido: abrir la app -> navegar a crear tarea -> llenar formulario ->
+# guardar -> verificar que la tarea aparece en la lista.
+#
+# Para ejecutar:
+#   maestro test .maestro/flujo_e2e_expo_go.yaml
+# (requiere el proyecto abierto en Expo Go y `adb reverse tcp:8081 tcp:8081`).
+
+# Abrir Expo Go. Si muestra su pantalla de inicio (lista de proyectos),
+# se toca el proyecto "task-manager" (paso opcional; si la app ya está
+# abierta, se omite).
+- launchApp:
+    appId: host.exp.exponent
+    clearState: false
+    stopApp: false
+
+- tapOn:
+    text: "task-manager"
+    optional: true
+
+# 1. Pantalla de inicio de la app
+- assertVisible: "Task Manager"
+
+# 2. Navegar a la pantalla de crear tarea
+- tapOn: "Flujo Todo List"
+- assertVisible: "Nueva tarea"
+
+# 3. Llenar el formulario
+- tapOn:
+    id: "input-titulo"
+- inputText: "Comprar materiales para el proyecto"
+- hideKeyboard
+
+# 4. Guardar
+- tapOn: "Guardar"
+
+# 5. Verificar confirmación de creación
+- assertVisible: "Tarea creada exitosamente"
+
+# 6. Verificar que la tarea aparece en la lista
+- assertVisible: "1 tarea"
+- assertVisible: "Comprar materiales para el proyecto"

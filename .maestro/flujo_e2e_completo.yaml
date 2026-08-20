@@ -1,0 +1,34 @@
+appId: com.taskmanager.app
+---
+# flujo E2E - Crear tarea
+# Abrir la app -> navega a la pantalla de crear tarea -> llenar el formulario -> 
+# guardar -> verificar que la tarea aparece en la lista.
+#
+
+# 1. Abrir la app limpia 
+- launchApp:
+    clearState: true
+
+# 2. Pantalla de inicio
+- assertVisible: "Task Manager"
+
+# 3. Navegar a la pantalla de crear tarea
+- tapOn: "Flujo Todo List"
+- assertVisible: "Nueva tarea"
+- assertVisible: "No hay tareas aún"
+
+# 4. Llenar el formulario
+- tapOn:
+    id: "input-titulo"
+- inputText: "Comprar materiales para el proyecto"
+- hideKeyboard
+
+# 5. Guardar
+- tapOn: "Guardar"
+
+# 6. Verificar confirmación de creación
+- assertVisible: "Tarea creada exitosamente"
+
+# 7. Verificar que la tarea aparece en la lista
+- assertVisible: "1 tarea"
+- assertVisible: "Comprar materiales para el proyecto"
