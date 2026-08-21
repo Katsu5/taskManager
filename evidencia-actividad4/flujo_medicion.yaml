@@ -1,0 +1,26 @@
+appId: host.exp.exponent
+---
+# QA: flujo de MEDICIÓN de rendimiento (Flashlight).
+# Abre el proyecto por deep link (cold start real, sin depender de la
+# lista de proyectos recientes de Expo Go) y recorre el flujo de tareas.
+- launchApp:
+    appId: host.exp.exponent
+    clearState: false
+    stopApp: false
+
+- openLink: "exp://127.0.0.1:8081"
+
+- extendedWaitUntil:
+    visible: "Task Manager"
+    timeout: 60000
+
+- tapOn: "Flujo Todo List"
+- assertVisible: "Nueva tarea"
+
+- tapOn:
+    id: "input-titulo"
+- inputText: "Tarea de rendimiento"
+- hideKeyboard
+
+- tapOn: "Guardar"
+- assertVisible: "Tarea creada exitosamente"
