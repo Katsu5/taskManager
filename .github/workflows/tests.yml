@@ -23,6 +23,9 @@ jobs:
       - name: Instalar dependencias
         run: npm ci --legacy-peer-deps
 
+      - name: Ejecutar linter
+        run: npx eslint src/ --ext .ts,.tsx
+
       - name: Verificar tipos
         run: npx tsc --noEmit
 

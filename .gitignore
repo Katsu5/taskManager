@@ -39,3 +39,9 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# documentación interna de trabajo (no forma parte del producto)
+ACTIVIDAD_4_PLAN.md
+
+# evidencia local de la medición de rendimiento (no forma parte del repo)
+evidencia-actividad4/
